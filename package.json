@@ -1,5 +1,5 @@
 {
-  "name": "ntask-mui",
+  "name": "ntask",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,14 +9,26 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/node": "18.15.13",
-    "@types/react": "18.0.37",
-    "@types/react-dom": "18.0.11",
-    "eslint": "8.38.0",
-    "eslint-config-next": "13.3.0",
-    "next": "13.3.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "typescript": "5.0.4"
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.0",
+    "@emotion/server": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@imbios/next-pwa": "^1.1.1",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.1",
+    "@mui/x-date-pickers": "^6.5.0",
+    "@types/node": "18.16.13",
+    "dayjs": "^1.11.7",
+    "eslint": "8.41.0",
+    "eslint-config-next": "13.4.3",
+    "next": "13.4.3",
+    "react": "latest",
+    "react-dom": "latest",
+    "typescript": "5.0.4",
+    "zustand": "^4.3.8"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest"
   }
 }
