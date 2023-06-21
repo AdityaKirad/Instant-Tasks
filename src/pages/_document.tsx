@@ -14,8 +14,20 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
   return (
     <Html lang="en" className={open_sans.className}>
       <Head>
-        <meta name="theme-color" content={theme.palette.primary.main} />
+        <meta name ="title" content ="Instant Tasks"/>
         <meta name="description" content="Organize your tasks" />
+        <meta name ="copyright" content ="Aditya Kirad"/>
+        <meta property ="og:type" content ="website"/>
+        <meta property ="og:url" content ="https://instant-tasks.netlify.app/"/>
+        <meta property ="og:title" content ="Instant Tasks"/>
+        <meta property ="og:description" content ="Day to Day Task Manager Built With NextJs, Zustand, MUI and more..."/>
+        <meta property ="og:image" content ="http://res.cloudinary.com/dpu5ywrox/image/upload/v1687361204/twe3kr9fo7uqjyffm4ea.png"/>
+        <meta property ="twitter:card" content ="summary_large_image"/>
+        <meta property ="twitter:url" content ="https://instant-tasks.netlify.app/"/>
+        <meta property ="twitter:title" content ="Instant Tasks"/>
+        <meta property ="twitter:description" content ="Day to Day Task Manager Built With NextJs, Zustand, MUI and more..."/>
+        <meta property ="twitter:image" content ="http://res.cloudinary.com/dpu5ywrox/image/upload/v1687361204/twe3kr9fo7uqjyffm4ea.png"/>
+        <meta name="theme-color" content={theme.palette.primary.main} />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />

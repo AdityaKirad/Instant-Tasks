@@ -4,8 +4,8 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "nTask",
-    "short_name": "nTask",
+    "name": "Instant-Tasks",
+    "short_name": "Instant-Tasks",
     "description": "Organize your tasks",
     "icons": [
         {
