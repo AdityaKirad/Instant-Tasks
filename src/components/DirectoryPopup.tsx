@@ -1,4 +1,5 @@
-import { FC, useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import { useState, useEffect } from 'react';
 import { Dialog, Box, Typography, IconButton, Button, TextField, useMediaQuery } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import { useTodos } from '@/utils/store/Task.store';
@@ -8,78 +9,56 @@ interface DirectoryPopupProps extends NavigationDrawerAndPopupProps {
     directory?: string;
 }
 
-const DirectoryPopup: FC<DirectoryPopupProps> = ({open, onClose, directory= ''}) => {
+const DirectoryPopup = ({open, onClose, directory= ''}: DirectoryPopupProps) => {
     const [directoryName, setDirectoryName] = useState('')
     const [error, setError] = useState(false)
 
     const isMobile = useMediaQuery('(max-width: 640px)');
     const { addDirectory, editDirectory } = useTodos()
+    const directoryLength = directory.trim().length
 
     useEffect(() => {
-        if(directory?.trim().length !== 0) {
-            setDirectoryName(directory!)
-        } else setDirectoryName('')
-    },[directory])
+        if(directoryLength !== 0) setDirectoryName(directory)
+        else setDirectoryName('')
+    },[directory, directoryLength])
 
-    function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        if(directoryName.length > 0) {
-            if(directory?.trim().length === 0) {
-                e.preventDefault()
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if(directoryName.length > 0)
+        switch (directoryLength) {
+            case 0:
                 addDirectory(directoryName)
                 setError(false)
                 onClose()
-            } else {
-                e.preventDefault()
-                editDirectory(directory!, directoryName)
+                break;
+            default:
+                editDirectory(directory, directoryName)
                 setError(false)
                 onClose()
-            }
-        } else {
-            setError(true)
-        }
+                break;
+        } else setError(true)
     }
 
-    function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
-        if(e.key === 'Enter') {
-            if(directoryName.length > 0) {
-                if(directory?.trim().length) {
-                    e.preventDefault()
-                    addDirectory(directoryName)
-                    setError(false)
-                    onClose()
-                } else {
-                    e.preventDefault()
-                    editDirectory(directory!, directoryName)
-                    setError(false)
-                    onClose()
-                }
-            } else {
-                setError(true)
-            }
-        }
-    }
-
-    function handleTextChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setDirectoryName(e.target.value)
-        if(error)
-        setError(false)
+        if(error) setError(false)
     }
 
-    function handlePopupClose() {
+    const handlePopupClose = () => {
         setError(false)
         onClose()
     }
     return (
         <Dialog open={open} onClose={handlePopupClose} PaperProps={{ sx: {width: isMobile ? '90%' : '40%'}} }>
-            <Box display='flex'flexDirection='column' gap='0.625rem' padding='0.625rem' borderRadius='0.625rem'>
+            <Box display='flex'flexDirection='column' gap='0.625rem' padding='0.625rem' borderRadius='0.625rem' component='form' onSubmit={handleSubmit}>
                 <Typography variant='h5' display='inline-flex' justifyContent='space-between'>
-                    {directory?.trim().length === 0 ? 'Create new directory' : 'Edit directory name'}
+                    {directoryLength === 0 ? 'Create new directory' : 'Edit directory name'}
                     <IconButton onClick={handlePopupClose}><Close /></IconButton>
                 </Typography>
-                <TextField variant='filled' value={directoryName} onChange={handleTextChange} onKeyDown={handleKeyDown} error={error} label="Title" placeholder='Enter a directory name' required
+                <TextField variant='filled' value={directoryName} onChange={handleTextChange}  error={error} label="Title" placeholder='Enter a directory name' required
                 />
                 <Box display='flex' gap='0.625rem'>
-                    <Button variant='contained' onClick={handleSubmit}>{directory?.trim().length === 0 ? 'Create' : 'Edit'}</Button>
+                    <Button variant='contained' type='submit'>{directoryLength === 0 ? 'Create' : 'Edit'}</Button>
                     <Button variant='text' onClick={handlePopupClose}>Cancel</Button>
                 </Box>
             </Box>
@@ -87,4 +66,4 @@ const DirectoryPopup: FC<DirectoryPopupProps> = ({open, onClose, directory= ''})
     )
 }
 
-export default DirectoryPopup
+export default dynamic(() => Promise.resolve(DirectoryPopup))

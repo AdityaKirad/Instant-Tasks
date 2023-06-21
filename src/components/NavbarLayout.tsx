@@ -1,15 +1,16 @@
 import StyledLink from '@/components/Link';
-import DeleteTaskPopup from '@/components/DeleteTaskPopup';
-import DirectoryPopup from '@/components/DirectoryPopup';
+import DeleteTaskPopup from '@/components/DeleteTaskPopup'
+import DirectoryPopup  from '@/components/DirectoryPopup'
 import { useRouter } from "next/router";
-import { FC, useState} from "react";
+import { useState} from "react";
 import { Box, Button, IconButton, List, ListItem, ListItemButton,  Collapse, ListItemIcon } from "@mui/material";
 import { KeyboardArrowRight, Add, Edit, Delete, } from '@mui/icons-material';
 import { useTodos } from "@/utils/store/Task.store";
 
-const NavigationLayout:FC = () => {
+
+const NavbarLayout = () => {
     const router = useRouter()
-    const currentPath = router.asPath;
+    const currentPath = decodeURIComponent(router.asPath);
     const {directories} = useTodos();
     const [directoryOpen, setDirectoryOpen] = useState(true)
     const [directoryPopup, setDirectoryPopup] = useState({
@@ -63,8 +64,8 @@ const NavigationLayout:FC = () => {
                                             </>
                                         )
                                     }
-                                    sx={currentPath === `/dir/${item.toLowerCase()}` ? {bgcolor: '#222831', borderRight: '0.5rem solid white'} : null}>
-                                    <StyledLink href={`/dir/${encodeURIComponent(item.toLowerCase())}`}>{item}</StyledLink>
+                                    sx={currentPath === `/dir/${item}` ? {bgcolor: '#222831', borderRight: '0.5rem solid white'} : null}>
+                                    <StyledLink href={`/dir/${encodeURIComponent(item)}`}>{item}</StyledLink>
                                 </ListItem>
                             ))}
                             <ListItem sx={{width: 'fit-content'}}>
@@ -83,4 +84,4 @@ const NavigationLayout:FC = () => {
     )
 }
 
-export default NavigationLayout;
+export default NavbarLayout;

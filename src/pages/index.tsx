@@ -1,9 +1,11 @@
-import { NextPage } from 'next'
-import RouteLayout from '@/components/RouteLayout'
+import type { NextPage } from 'next'
+import { useTodos } from '@/utils/store/Task.store'
+import TaskGrid from '@/components/TaskGrid'
 
 const Home:NextPage = () => {
+  const {todos} = useTodos()
   return (
-    <RouteLayout />
+    <TaskGrid Todos={todos}/>
   )
 }
 

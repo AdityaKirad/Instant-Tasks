@@ -1,14 +1,15 @@
 import { useRouter } from 'next/router';
-import { FC, useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Grid, Box, Button, IconButton, Typography, Divider, Paper, useMediaQuery, useTheme } from '@mui/material';
 import { CalendarMonth, StarOutline, Star, Delete, Edit, Check, Close } from '@mui/icons-material';
-import { useFilterdTodos } from '@/hooks/useFilterdTodos'
 import { useTodos } from '@/utils/store/Task.store';
 import { GridViewContext } from '@/context/viewContext';
+import { TodosSortContext } from '@/context/TodosSortContext';
 import dayjs from 'dayjs';
 import AddAndEditTaskPopup from '@/components/AddAndEditTaskPopup';
+import { Todo } from '@/types';
 
-const TaskGrid:FC = () => {
+const TaskGrid = ({Todos}: {Todos: Todo[]}) => {
     const [addAndEditTaskPopup, setAddAndEditTaskPopup] = useState<{
         active: boolean;
         taskId?: number | undefined;
@@ -16,18 +17,31 @@ const TaskGrid:FC = () => {
         active: false,
         taskId: undefined
     })
+    const [sortedTodos, setSortedTodos] = useState(Todos)
     const router = useRouter()
-    const { filterdTodos } = useFilterdTodos();
     const {toggleImportant, toggleCompleted, deleteTodo} = useTodos()
     const GridView = useContext(GridViewContext);
+    const TodosSortMethod = useContext(TodosSortContext)
     const isMobile = useMediaQuery('(max-width: 640px)');
     const theme = useTheme()
     function handleDirectoryRoute(dirName: string) {
         router.push(`/dir/${encodeURIComponent(dirName.toLowerCase())}`)
     }
+    useEffect(() => {
+        if(TodosSortMethod === 'Earlier First')
+        setSortedTodos([...Todos].sort((a, b) => dayjs(a.date).diff(dayjs(b.date))))
+        else if(TodosSortMethod === 'Later First')
+        setSortedTodos([...Todos].sort((a, b) => dayjs(b.date).diff(dayjs(a.date))))
+        else if(TodosSortMethod === 'Completed First')
+        setSortedTodos([...Todos].sort((a, b) => (b.completed ? 1 : 0) - (a.completed ? 1 : 0)))
+        else if(TodosSortMethod === 'Uncompleted First')
+        setSortedTodos([...Todos].sort((a, b) => (a.completed ? 1 : 0) - (b.completed ? 1 : 0)))
+        else
+        setSortedTodos([...Todos])
+    },[Todos, TodosSortMethod])
     return (
         <Grid container spacing={2}>
-            {filterdTodos.map((todo, key) => {
+            {sortedTodos.map((todo, key) => {
                 return (
                     <Grid item key={key} display='flex' flexDirection='column' xs={GridView ? 6 : 12} md={GridView ? 4 : 12} lg={GridView ? 3 : 12} xl={GridView ? 4 : 12}>
                         <Button variant='contained' fullWidth={false} sx={{alignSelf: 'flex-end', marginRight: '1rem', borderRadius: '1rem 1rem 0 0'}} onClick={() => handleDirectoryRoute(todo.directory)} disableElevation>{todo.directory}</Button>

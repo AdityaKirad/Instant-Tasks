@@ -44,6 +44,9 @@ const useTodos = create(
                 addDirectory: (directoryName) => set({directories: [...get().directories, directoryName]}),
 
                 editDirectory: (oldName, newName) => set({
+                    todos: get().todos.map(todo => 
+                        todo.directory === oldName ? {...todo, directory: newName } : todo
+                    ),
                     directories: get().directories.map((item) =>
                         item === oldName ? newName : item
                     ),

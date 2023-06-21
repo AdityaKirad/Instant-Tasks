@@ -1,7 +1,7 @@
 import StyledLink from '@/components/Link';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-import { FC, useState, useMemo} from "react";
+import { FC, useState } from "react";
 import { Box, Paper, TextField, IconButton, Button, Typography, List, ListItem, useMediaQuery, ClickAwayListener } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { useTodos } from "@/utils/store/Task.store";
@@ -11,9 +11,7 @@ const TaskSearchField: FC = () => {
     const [searchBox, setSearchBox] = useState(false)
     const router = useRouter()
     const { todos } = useTodos();
-    const filterdTodos = useMemo(() => {
-        return todos.filter(todo => todo.title.toLocaleLowerCase().includes(searchValue.toLowerCase() as string)).slice(0, 4)
-    },[todos, searchValue])
+    const filterdTodos = todos.filter(todo => todo.title.toLocaleLowerCase().includes(searchValue.toLowerCase() as string)).slice(0, 4)
     function handleSubmit (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault()
         router.push({pathname: '/results', query: {search: encodeURIComponent(searchValue)}})

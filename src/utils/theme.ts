@@ -1,15 +1,15 @@
-import { Open_Sans, Arvo } from 'next/font/google';
+import { Open_Sans } from 'next/font/google';
 import {createTheme} from '@mui/material/styles';
 
 export const open_sans = Open_Sans({
     subsets: ['latin'],
     display: 'swap',
-    weight: 'variable'
+    weight: ['300', '400', '500', '600', '700', '800']
 });
 
 const theme = createTheme({ 
     typography: {
-        fontFamily: open_sans.style.fontFamily, 
+        fontFamily: open_sans.style.fontFamily,
     },
     palette: {
         mode: 'dark',
